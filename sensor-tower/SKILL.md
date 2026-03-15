@@ -124,9 +124,8 @@ Before making any API request, you **must**:
   - **Unified**: Use iOS numeric IDs
   - Full mapping: `swaggerdocs/static/category_ids.json`
 - `limit`: Usually max 100-250 per call (some up to 6000)
-- `ad_type`: Single ad type for `ad_intel/creatives/top` (e.g., `playable`, `video`, `image`)
-- `ad_types`: Multiple ad types for `ad_intel/creatives` (comma-separated: `video,image`, `playable,interactive-playable`)
-- `networks`: Comma-separated network names (e.g., `Applovin,Admob,Unity,Facebook,TikTok,Vungle,IronSource`)
+- `ad_types`: `image`, `video`, `playable`, `interactive-playable`, `interactive-playable-rewarded`, etc.
+- `networks`: `Applovin`, `Admob`, `Unity`, `Facebook`, `TikTok`, `Vungle`, `IronSource`, etc.
 - `date_granularity`: `daily`, `weekly`, `monthly`, `quarterly`
 - `device_type` (iOS only): `iphone`, `ipad`, `total`
 
