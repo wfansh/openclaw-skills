@@ -155,7 +155,7 @@ GET /v1/android/apps?app_ids=com.fun.lastwar.gp
 
 **Get creatives for a specific app:**
 ```
-GET /v1/android/ad_intel/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=WW&ad_types=video,image&limit=100
+GET /v1/android/ad_intel/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=US&networks=Applovin&ad_types=video,image&limit=100
 ```
 
 **Get your own app's sales report:**
