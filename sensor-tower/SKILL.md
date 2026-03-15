@@ -25,29 +25,44 @@ Before making any API request, you **must**:
 
 ### 1. App Intelligence (`app_analysis.yml`)
 - **App Metadata**: `/v1/{os}/apps` - Get app details (name, publisher, rating, etc.)
-- **App Creatives**: `/v1/{os}/apps/creatives` - Get ad creatives for specific apps
 - **Sales Estimates**: `/v1/{os}/sales_report_estimates` - Download & revenue estimates for competitors
-- **Compact Sales Estimates**: `/v1/{os}/sales_report_estimates_compact` - Summary estimates
+- **Compact Sales Estimates**: `/v1/{os}/compact_sales_report_estimates` - Summary estimates
 - **Active Users**: `/v1/{os}/usage/active_users` - MAU/DAU estimates
-- **Top Apps by Users**: `/v1/{os}/usage/top_apps` - Top apps by active users
-- **App Retention**: `/v1/{os}/app_analysis/retention` - Retention metrics
-- **App Demographics**: `/v1/{os}/app_analysis/demographics` - User demographics (age, gender)
-- **Session Metrics**: `/v1/{os}/session_metrics/timeseries` - Session data over time
-- **Cohort Analysis**: Various cohort retention and churn endpoints
-- **In-App Purchases**: `/v1/{os}/top_in_app_purchases` - Top IAP products
+- **Category Rankings**: `/v1/{os}/category/category_history` & `/v1/{os}/category/category_ranking_summary`
+- **Ad Creatives**: `/v1/{os}/ad_intel/creatives` - Ad creatives for specific apps
+- **Retention**: `/v1/{os}/usage/retention` - Retention metrics (D1, D7, D30, D90)
+- **Demographics**: `/v1/{os}/usage/demographics` - User demographics (age, gender)
+- **Session Metrics**: `/v1/apps/timeseries` & `/v1/apps/timeseries/unified_apps` - Session data over time
+- **Cohort Analysis**:
+  - `/v1/{os}/consumer_intel/churn_analysis`
+  - `/v1/{os}/consumer_intel/churn_analysis/cohorts`
+  - `/v1/{os}/consumer_intel/cohort_retention`
+  - `/v1/{os}/consumer_intel/cohort_retention/cohorts`
+  - `/v1/{os}/consumer_intel/engagement_insights`
+  - `/v1/{os}/consumer_intel/engagement_insights/cohorts`
+  - `/v1/{os}/consumer_intel/time_of_day`
+  - `/v1/{os}/consumer_intel/time_of_day/cohorts`
+  - `/v1/{os}/consumer_intel/power_user_curve`
+  - `/v1/{os}/consumer_intel/power_user_curve/cohorts`
+  - `/v1/{os}/consumer_intel/cohort_engagement`
+  - `/v1/{os}/consumer_intel/cohort_engagement/cohorts`
+- **In-App Purchases** (iOS only): `/v1/ios/apps/top_in_app_purchases` - Top IAP products
 - **Downloads by Sources**: `/v1/{os}/downloads_by_sources` - Download sources breakdown
+- **App Updates**: `/v1/{os}/app_update/get_app_update_history` & `/v1/{os}/apps/version_history`
+- **App Overlap**: `/v1/unified/app_overlap` - Apps also used by this app's users
+- **Custom Fields**: See Custom Fields & Metadata section below
 
 ### 2. Ad Intelligence (`market_analysis.yml`)
 - **Top Creatives**: `/v1/{os}/ad_intel/creatives/top` - Top performing creatives by category/network
 - **Top Apps by Ads**: `/v1/{os}/ranking` - Top ranked apps in a category
 - **Top Apps Comparison**: `/v1/{os}/sales_report_estimates_comparison_attributes` - Top apps with absolute/delta metrics
-- **Top Publishers**: `/v1/{os}/publishers` - Top publishers by downloads/revenue
+- **Top Publishers**: `/v1/{os}/top_and_trending/publishers` - Top publishers by downloads/revenue
 - **Store Summary**: `/v1/{os}/store_summary` - Category-level download/revenue estimates
 - **Game Breakdown**: `/v1/{os}/games_breakdown` - Game category aggregation (different category IDs)
-- **Search Ad Rankings**: `/v1/{os}/top_apps_search` - Advertiser/publisher rank in search ads
+- **Search Ad Rankings**: `/v1/{os}/ad_intel/top_apps/search` - Advertiser/publisher rank in search ads
 
 ### 3. Store Marketing (`store_marketing.yml`)
-- **Featured Apps**: `/v1/{os}/featured/apps` - Apps featured on App Store/Google Play
+- **Featured Apps** (iOS only): `/v1/ios/featured/apps` - Apps featured on App Store
 - **Featured Creatives**: `/v1/{os}/featured/creatives` - Featured ad creatives with positions
 - **Featured Impacts**: `/v1/{os}/featured/impacts` - Impact of featuring (downloads, occurrences)
 - **Keyword Research**: `/v1/{os}/keywords/research_keyword` - Keyword details and ranking apps
@@ -55,17 +70,26 @@ Before making any API request, you **must**:
 - **Keyword Rankings**: `/v1/{os}/keywords/keywords` - Tracked keywords for an app (requires app in account)
 - **Keyword Overview**: `/v1/{os}/keywords/overview/history` - Overall keyword ranking history
 - **Keyword Traffic**: `/v1/{os}/keywords/traffic` - Traffic scores for keywords
-- **Search Ads Apps**: `/v1/ios/search_ads/apps` - Apps bidding on a keyword (Apple Search Ads)
-- **Search Ads History**: `/v1/ios/search_ads/history` - Historical share of voice for keywords
-- **Search Ads Terms**: `/v1/ios/search_ads/terms` - Keywords an app bids on
-- **Trending Searches**: `/v1/ios/keywords/trending_searches` - Current trending search terms
-- **Search Suggestions**: `/v1/ios/keywords/search_suggestions` - Search suggestions for a keyword
+- **Search Ads Apps** (iOS only): `/v1/ios/search_ads/apps` - Apps bidding on a keyword
+- **Search Ads History** (iOS only): `/v1/ios/search_ads/history` - Historical share of voice for keywords
+- **Search Ads Terms** (iOS only): `/v1/ios/search_ads/terms` - Keywords an app bids on
+- **Trending Searches** (iOS only): `/v1/ios/keywords/trending_searches` - Current trending search terms
+- **Search Suggestions** (iOS only): `/v1/ios/keywords/search_suggestions` - Search suggestions for a keyword
 
 ### 4. Custom Fields & Metadata (`custom_fields_metadata.yml`)
 - **Search Entities**: `/v1/{os}/search_entities` - Search apps/publishers by name/ID (min 2-3 chars)
 - **App IDs by Date**: `/v1/{os}/apps/app_ids` - Get app IDs released/updated in date range/category
-- **Custom Fields Filter**: Create/manage custom field filters for segmentation
-- **Custom Fields Values**: Get custom field values for apps
+- **Unified IDs**: `/v1/unified/apps` & `/v1/unified/publishers` - Map iOS/Android IDs to unified IDs
+- **Publisher Apps**: `/v1/{os}/publisher/publisher_apps` & `/v1/unified/publishers/apps`
+- **Custom Field Management**:
+  - `/v1/custom_field/custom_field_list`
+  - `/v1/custom_field/change_all_values_matching`
+  - `/v1/custom_field/remove_custom_field`
+- **Custom Fields Filter**:
+  - `/v1/custom_fields_filter` (create)
+  - `/v1/custom_fields_filter/{id}` (get/update/delete)
+  - `/v1/custom_fields_filter/fields_values` (get values)
+- **Tag Values**: `/v1/app_tag/tags_for_apps` - Get custom field tags for apps
 
 ### 5. Connected Apps & My Metrics (`your_metrics.yml`)
 ⚠️ **Only for apps you own and have connected via iTunes Connect/Google Play**
@@ -74,7 +98,7 @@ Before making any API request, you **must**:
 - **Sources Metrics**: `/v1/ios/sales_reports/sources_metrics` - Metrics by traffic source type (Search, etc.)
 - **Sales Reports**: `/v1/{os}/sales_reports` - Your own apps' downloads & revenue (net, in cents)
 - **Unified Sales Reports**: `/v1/unified/sales_reports` - Unified app downloads & revenue across iOS/Android
-- **App Usage**: `/v1/{os}/usage/app_usage` - App usage metrics for connected apps
+- **API Usage**: `/v1/api_usage` - Check your API quota usage
 
 ## 🚀 Task Execution Flow
 1. **Parse intent**: Determine the target app, platform (iOS/Android), metrics, and time range.
@@ -131,7 +155,7 @@ GET /v1/android/apps?app_ids=com.fun.lastwar.gp
 
 **Get creatives for a specific app:**
 ```
-GET /v1/android/apps/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=WW&ad_types=playable&limit=100
+GET /v1/android/ad_intel/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=WW&ad_types=playable&limit=100
 ```
 
 **Get your own app's sales report:**
