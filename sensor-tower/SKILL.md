@@ -19,21 +19,127 @@ Before making any API request, you **must**:
 ## 🛠️ API Specification
 - **Base URL**: `https://api.sensortower.com`
 - **Rate Limit**: 6 requests/sec.
-- **Swagger Reference**: Before constructing a request, consult the YAML files in `./swaggerdocs/` folder (e.g., `apps.json`, `sales_report_estimates.json`) for accurate endpoint paths and parameter definitions.
+- **Swagger Reference**: Before constructing a request, consult the YAML files in `./swaggerdocs/` folder for accurate endpoint paths and parameter definitions.
 
-## 📖 Knowledge Index
-- **App Search/Details/Rankings**: `./swaggerdocs/apps.json`
-- **Download/Revenue Estimates**: `./swaggerdocs/sales_report_estimates.json`
-- **Reviews/Ratings Data**: `./swaggerdocs/reviews.json`
-- **Keywords/Ad Intelligence**: `./swaggerdocs/keywords.json` or `./swaggerdocs/ad_intelligence.json`
+## 📖 Knowledge Index (by functionality)
+
+### 1. App Intelligence (`app_analysis.yml`)
+- **App Metadata**: `/v1/{os}/apps` - Get app details (name, publisher, rating, etc.)
+- **App Creatives**: `/v1/{os}/apps/creatives` - Get ad creatives for specific apps
+- **Sales Estimates**: `/v1/{os}/sales_report_estimates` - Download & revenue estimates for competitors
+- **Compact Sales Estimates**: `/v1/{os}/sales_report_estimates_compact` - Summary estimates
+- **Active Users**: `/v1/{os}/usage/active_users` - MAU/DAU estimates
+- **Top Apps by Users**: `/v1/{os}/usage/top_apps` - Top apps by active users
+- **App Retention**: `/v1/{os}/app_analysis/retention` - Retention metrics
+- **App Demographics**: `/v1/{os}/app_analysis/demographics` - User demographics (age, gender)
+- **Session Metrics**: `/v1/{os}/session_metrics/timeseries` - Session data over time
+- **Cohort Analysis**: Various cohort retention and churn endpoints
+- **In-App Purchases**: `/v1/{os}/top_in_app_purchases` - Top IAP products
+- **Downloads by Sources**: `/v1/{os}/downloads_by_sources` - Download sources breakdown
+
+### 2. Ad Intelligence (`market_analysis.yml`)
+- **Top Creatives**: `/v1/{os}/ad_intel/creatives/top` - Top performing creatives by category/network
+- **Top Apps by Ads**: `/v1/{os}/ranking` - Top ranked apps in a category
+- **Top Apps Comparison**: `/v1/{os}/sales_report_estimates_comparison_attributes` - Top apps with absolute/delta metrics
+- **Top Publishers**: `/v1/{os}/publishers` - Top publishers by downloads/revenue
+- **Store Summary**: `/v1/{os}/store_summary` - Category-level download/revenue estimates
+- **Game Breakdown**: `/v1/{os}/games_breakdown` - Game category aggregation (different category IDs)
+- **Search Ad Rankings**: `/v1/{os}/top_apps_search` - Advertiser/publisher rank in search ads
+
+### 3. Store Marketing (`store_marketing.yml`)
+- **Featured Apps**: `/v1/{os}/featured/apps` - Apps featured on App Store/Google Play
+- **Featured Creatives**: `/v1/{os}/featured/creatives` - Featured ad creatives with positions
+- **Featured Impacts**: `/v1/{os}/featured/impacts` - Impact of featuring (downloads, occurrences)
+- **Keyword Research**: `/v1/{os}/keywords/research_keyword` - Keyword details and ranking apps
+- **Keyword Downloads**: `/v1/{os}/keywords/downloads/history` - Keyword-driven download estimates
+- **Keyword Rankings**: `/v1/{os}/keywords/keywords` - Tracked keywords for an app (requires app in account)
+- **Keyword Overview**: `/v1/{os}/keywords/overview/history` - Overall keyword ranking history
+- **Keyword Traffic**: `/v1/{os}/keywords/traffic` - Traffic scores for keywords
+- **Search Ads Apps**: `/v1/ios/search_ads/apps` - Apps bidding on a keyword (Apple Search Ads)
+- **Search Ads History**: `/v1/ios/search_ads/history` - Historical share of voice for keywords
+- **Search Ads Terms**: `/v1/ios/search_ads/terms` - Keywords an app bids on
+- **Trending Searches**: `/v1/ios/keywords/trending_searches` - Current trending search terms
+- **Search Suggestions**: `/v1/ios/keywords/search_suggestions` - Search suggestions for a keyword
+
+### 4. Custom Fields & Metadata (`custom_fields_metadata.yml`)
+- **Search Entities**: `/v1/{os}/search_entities` - Search apps/publishers by name/ID (min 2-3 chars)
+- **App IDs by Date**: `/v1/{os}/apps/app_ids` - Get app IDs released/updated in date range/category
+- **Custom Fields Filter**: Create/manage custom field filters for segmentation
+- **Custom Fields Values**: Get custom field values for apps
+
+### 5. Connected Apps & My Metrics (`your_metrics.yml`)
+⚠️ **Only for apps you own and have connected via iTunes Connect/Google Play**
+
+- **Analytics Metrics**: `/v1/ios/sales_reports/analytics_metrics` - App Store analytics (impressions, views, sessions, active devices)
+- **Sources Metrics**: `/v1/ios/sales_reports/sources_metrics` - Metrics by traffic source type (Search, etc.)
+- **Sales Reports**: `/v1/{os}/sales_reports` - Your own apps' downloads & revenue (net, in cents)
+- **Unified Sales Reports**: `/v1/unified/sales_reports` - Unified app downloads & revenue across iOS/Android
+- **App Usage**: `/v1/{os}/usage/app_usage` - App usage metrics for connected apps
 
 ## 🚀 Task Execution Flow
 1. **Parse intent**: Determine the target app, platform (iOS/Android), metrics, and time range.
-2. **Check documentation**: Search the `./swaggerdocs/` directory for the correct API path (usually starting with `/v1/`) and required parameters.
-3. **Make secure request**:
-   - Example: `GET https://api.sensortower.com/v1/ios/sales_report_estimates?app_ids=1621328575&auth_token={api_key}&granularity=weekly`
-4. **Parse response**: Extract data, monitor `x-api-usage-count` header (quota usage) and report to user.
+2. **Check documentation**: Search the `./swaggerdocs/` directory for the correct API path and required parameters.
+   - Use `grep` or `Select-String` to find relevant `operationId` or endpoint paths
+   - Pay attention to required vs optional parameters
+3. **Construct request URL**:
+   - Format: `https://api.sensortower.com/<endpoint>?<params>&auth_token=<api_key>`
+   - For arrays (e.g., `app_ids`, `countries`), join values with commas
+   - Date parameters: `YYYY-MM-DD` format
+4. **Make secure request** using `Invoke-RestMethod` or equivalent
+5. **Parse response**: Extract relevant data
+6. **Monitor quota**: Check `x-api-usage-count` header if available and report usage
+
+## 📌 Common Parameter Patterns
+- `{os}`: `ios`, `android`, or `unified`
+- `country`: 2-letter country code (US, GB, JP, etc.) or `WW` for worldwide
+- `app_ids`: Comma-separated list (iOS = numeric IDs, Android = package names, Unified = Object IDs)
+- `date` / `start_date` / `end_date`: `YYYY-MM-DD`
+- `category`: Category ID (varies by platform; use iOS IDs for unified)
+  - Game categories: Use platform-specific IDs (iOS: 7000+ series, Android: strings like `action`, `strategy`)
+- `limit`: Usually max 100-250 per call (some up to 6000)
+- `ad_types`: `image`, `video`, `playable`, `interactive-playable`, `interactive-playable-rewarded`, etc.
+- `networks`: `Applovin`, `Admob`, `Unity`, `Facebook`, `TikTok`, `Vungle`, `IronSource`, etc.
+- `date_granularity`: `daily`, `weekly`, `monthly`, `quarterly`
+- `device_type` (iOS only): `iphone`, `ipad`, `total`
 
 ## ⚠️ Constraints
 - **Never** expose the API key in plain text from `config.json` in your replies.
 - If a request returns 401, prompt the user to verify that `config.json` contains a valid `api_key`.
+- All Swagger files use **YAML** format (`.yml` extension), not JSON.
+- Be careful with platform-specific category IDs (iOS vs Android use different values).
+- Some endpoints require the app to be followed in your Sensor Tower account (e.g., keyword tracking).
+- Connected app metrics (`your_metrics.yml`) only work for apps you own and have connected.
+- Respect rate limits: 6 requests per second max.
+- Revenues are returned in **cents** (divide by 100 for dollars).
+
+## 💡 Example Usage
+
+**Search for an app:**
+```
+GET /v1/android/search_entities?entity_type=app&term=Last War:Survival Game&limit=10
+```
+
+**Get top playable creatives in a category:**
+```
+GET /v1/android/ad_intel/creatives/top?date=2026-03-01&period=month&category=game&country=US&network=Applovin&ad_types=playable&limit=250
+```
+
+**Get app metadata:**
+```
+GET /v1/android/apps?app_ids=com.fun.lastwar.gp
+```
+
+**Get creatives for a specific app:**
+```
+GET /v1/android/apps/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=WW&ad_types=playable&limit=100
+```
+
+**Get your own app's sales report:**
+```
+GET /v1/ios/sales_reports?app_ids=1234567890&countries=US&start_date=2026-01-01&end_date=2026-01-31&date_granularity=daily
+```
+
+**Get keyword research data:**
+```
+GET /v1/ios/keywords/research_keyword?term=puzzle&country=US&app_id=123456789
+```
