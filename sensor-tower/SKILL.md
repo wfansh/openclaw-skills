@@ -145,7 +145,7 @@ GET /v1/android/search_entities?entity_type=app&term=Last%20War&limit=10
 
 **Get top playable creatives in a category:**
 ```
-GET /v1/android/ad_intel/creatives/top?start_date=2026-01-01&end_date=2026-01-31&period=month&category=game_strategy&country=US&network=Applovin&ad_type=playable&limit=100
+GET /v1/android/ad_intel/creatives/top?date=2026-01-01&period=month&category=game_strategy&country=US&network=Applovin&ad_type=playable&limit=100
 ```
 
 **Get app metadata:**
