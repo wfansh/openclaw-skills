@@ -115,14 +115,18 @@ Before making any API request, you **must**:
 
 ## 📌 Common Parameter Patterns
 - `{os}`: `ios`, `android`, or `unified`
-- `country`: 2-letter country code (US, GB, JP, etc.) or `WW` for worldwide
+- `country`: 2-letter country code (US, GB, JP, etc.) or `WW` for worldwide (where supported)
 - `app_ids`: Comma-separated list (iOS = numeric IDs, Android = package names, Unified = Object IDs)
 - `date` / `start_date` / `end_date`: `YYYY-MM-DD`
-- `category`: Category ID (varies by platform; use iOS IDs for unified)
-  - Game categories: Use platform-specific IDs (iOS: 7000+ series, Android: strings like `action`, `strategy`)
+- `category`: Category ID (platform-specific)
+  - **iOS**: Numeric IDs (e.g., `6014` = Games, `7017` = Games/Strategy, `6005` = Social Networking)
+  - **Android**: String IDs (e.g., `game_strategy`, `game_casino`, `game_casual`, `social`, `entertainment`)
+  - **Unified**: Use iOS numeric IDs
+  - Full mapping: `swaggerdocs/static/category_ids.json`
 - `limit`: Usually max 100-250 per call (some up to 6000)
-- `ad_types`: `image`, `video`, `playable`, `interactive-playable`, `interactive-playable-rewarded`, etc.
-- `networks`: `Applovin`, `Admob`, `Unity`, `Facebook`, `TikTok`, `Vungle`, `IronSource`, etc.
+- `ad_type`: Single ad type for `ad_intel/creatives/top` (e.g., `playable`, `video`, `image`)
+- `ad_types`: Multiple ad types for `ad_intel/creatives` (comma-separated: `video,image`, `playable,interactive-playable`)
+- `networks`: Comma-separated network names (e.g., `Applovin,Admob,Unity,Facebook,TikTok,Vungle,IronSource`)
 - `date_granularity`: `daily`, `weekly`, `monthly`, `quarterly`
 - `device_type` (iOS only): `iphone`, `ipad`, `total`
 
