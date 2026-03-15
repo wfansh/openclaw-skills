@@ -140,12 +140,12 @@ Before making any API request, you **must**:
 
 **Search for an app:**
 ```
-GET /v1/android/search_entities?entity_type=app&term=Last War:Survival Game&limit=10
+GET /v1/android/search_entities?entity_type=app&term=Last%20War&limit=10
 ```
 
 **Get top playable creatives in a category:**
 ```
-GET /v1/android/ad_intel/creatives/top?date=2026-03-01&period=month&category=game&country=US&network=Applovin&ad_types=playable&limit=250
+GET /v1/android/ad_intel/creatives/top?start_date=2026-01-01&end_date=2026-01-31&period=month&category=game_strategy&country=US&network=Applovin&ad_type=playable&limit=100
 ```
 
 **Get app metadata:**
@@ -155,7 +155,7 @@ GET /v1/android/apps?app_ids=com.fun.lastwar.gp
 
 **Get creatives for a specific app:**
 ```
-GET /v1/android/ad_intel/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=WW&ad_types=playable&limit=100
+GET /v1/android/ad_intel/creatives?app_ids=com.fun.lastwar.gp&start_date=2026-01-01&end_date=2026-12-31&countries=WW&ad_types=video,image&limit=100
 ```
 
 **Get your own app's sales report:**
