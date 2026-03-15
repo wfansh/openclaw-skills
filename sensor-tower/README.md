@@ -29,43 +29,13 @@ sensor-tower/
 
 **Why optional?**: The skill already includes the Swagger definitions in `swaggerdocs/`. Only update if you need newer API specs or additional endpoints.
 
-**Action**: Download the `.yaml` files from your Sensor Tower account dashboard.
+**Action**: Download the `.yaml` files from [Github](https://github.com/virusimmortal00/sensortower-mcp/tree/main/swaggerdocs).
 
 **Placement**: Place them in `sensor-tower/swaggerdocs/`, replacing existing files if needed.
 
 ---
 
 ### 2. Configure API Key
-
-Choose one method:
-
-#### Method A: Environment Variable (Recommended)
-
-Set the environment variable based on your operating system:
-
-**Windows (Command Prompt)**:
-```cmd
-setx SENSOR_TOWER_AUTH_TOKEN "your_key_here"
-```
-Restart your terminal or command prompt after setting.
-
-**Windows (PowerShell)**:
-```powershell
-$env:SENSOR_TOWER_AUTH_TOKEN="your_key_here"
-```
-Note: This is session-only. For permanent storage, use `setx` or add to PowerShell profile.
-
-**macOS / Linux (Bash/Zsh)**:
-```bash
-export SENSOR_TOWER_AUTH_TOKEN="your_key_here"
-```
-To make it permanent, add the line to your shell profile:
-- `~/.bashrc` or `~/.bash_profile` (Bash)
-- `~/.zshrc` (Zsh)
-
-**Cross-platform tip**: You can also set it in OpenClaw's system environment if running as a service.
-
-#### Method B: Local `config.json`
 
 Create a `config.json` file in the `sensor-tower/` skill directory with the following content:
 
@@ -77,7 +47,6 @@ Create a `config.json` file in the `sensor-tower/` skill directory with the foll
 
 **File location**:
 - The skill expects the file at: `sensor-tower/config.json` (relative to the skill directory)
-- This file should **NOT** be committed to version control (it's in `.gitignore`).
 
 **Create the file**:
 
@@ -86,20 +55,20 @@ Create a `config.json` file in the `sensor-tower/` skill directory with the foll
 
 **Windows (Command Prompt)**:
 ```cmd
-echo {^"api_key^": ^"your_key_here^"} > C:\Users\wfansh\.openclaw\workspace\skills\sensor-tower\config.json
+echo {^"api_key^": ^"your_key_here^"} > "%OPENCLAW_WORKSPACE%\skills\sensor-tower\config.json"
 ```
 
 **Windows (PowerShell)**:
 ```powershell
-'{"api_key": "your_key_here"}' | Out-File -FilePath "C:\Users\wfansh\.openclaw\workspace\skills\sensor-tower\config.json" -Encoding UTF8
+'{"api_key": "your_key_here"}' | Out-File -FilePath "$env:OPENCLAW_WORKSPACE\skills\sensor-tower\config.json" -Encoding UTF8
 ```
 
 **macOS / Linux (Bash)**:
 ```bash
-echo '{"api_key": "your_key_here"}' > /path/to/sensor-tower/config.json
+echo '{"api_key": "your_key_here"}' > "$OPENCLAW_WORKSPACE/skills/sensor-tower/config.json"
 ```
 
-Replace the path with your actual skill location.
+Replace `$OPENCLAW_WORKSPACE` with your actual OpenClaw workspace path if not set as an environment variable.
 
 </details>
 
@@ -147,7 +116,7 @@ The skill covers 5 major Sensor Tower API products:
 
 ## 🔐 Security Notes
 
-- The skill reads the API key from `config.json` or environment variable.
+- The skill reads the API key from `config.json` (environment variable not used).
 - Never commit `config.json` with a real API key to version control.
 - Add `config.json` to `.gitignore` if using git.
 
